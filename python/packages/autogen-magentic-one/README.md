@@ -151,3 +151,88 @@ You can set it using:
 ```bash
 export BING_API_KEY=xxxxxxx
 ```
+
+
+
+
+
+
+
+--------------------------------
+
+# AutoGen Magnetic One Setup Guide
+
+## Prerequisites
+- VS Code with Dev Containers extension
+- Docker installed and running
+- OpenAI API key
+
+## Initial Setup Steps
+
+1. Open the project in VS Code Dev Container:
+   ```bash
+   cd /workspaces/autogen
+   ```
+
+2. Create and activate Python 3.11 virtual environment:
+   ```bash
+   cd python/packages/autogen-core
+   python3.11 -m venv venv_py311
+   source venv_py311/bin/activate
+   ```
+
+3. Install required packages in this order:
+   ```bash
+   # Install autogen-core
+   cd /workspaces/autogen/python/packages/autogen-core
+   pip install -e .
+
+   # Install autogen-ext with Docker support
+   cd ../autogen-ext
+   pip install -e ".[docker]"
+
+   # Install autogen-magentic-one
+   cd ../autogen-magentic-one
+   pip install -e .
+   ```
+
+4. Install Playwright, browsers, and dependencies:
+   ```bash
+   # Install Playwright Python package
+   pip install playwright
+   
+   # Install browser binaries
+   playwright install
+   
+   # Install system dependencies (use the full path)
+   sudo /workspaces/autogen/python/packages/autogen-core/venv_py311/bin/playwright install-deps
+   ```
+
+5. Set up OpenAI API key:
+   ```bash
+   cd /workspaces/autogen/python/packages/autogen-magentic-one
+   echo "OPENAI_API_KEY=your-actual-api-key-here" > .env
+   ```
+
+## Running the Program
+
+1. Activate the virtual environment:
+   ```bash
+   cd /workspaces/autogen/python/packages/autogen-core
+   source venv_py311/bin/activate
+   ```
+
+2. Navigate to magentic-one:
+   ```bash
+   cd ../autogen-magentic-one
+   ```
+
+3. Run the example:
+   ```bash
+   python examples/example.py --logs_dir ./my_logs
+   ```
+
+## Troubleshooting
+- If Docker isn't running: `sudo service docker start`
+- If API key issues: Check `.env` file in autogen-magentic-one directory
+- If module not found errors: Make sure you're in the virtual environment (should see `(venv_py311)` in prompt)
