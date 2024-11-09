@@ -75,7 +75,7 @@ with col3:
     # Create the toggle button
     if st.button(icon, key='theme_toggle', help='Toggle Dark/Light Mode'):
         toggle_theme()
-        st.experimental_rerun()
+        st.rerun()
 
 # Inject CSS based on the selected theme
 dark_theme_css = """
@@ -217,26 +217,6 @@ try:
                     st.session_state.current_chat_index = idx
                     st.session_state.task_completed = True
 
-        # # Display existing log folders
-        # st.markdown("### 📂 Existing Logs")
-        # existing_logs = [name for name in os.listdir(logs_dir) if os.path.isdir(os.path.join(logs_dir, name))]
-        # for log in existing_logs:
-        #     if search_query.lower() in log.lower():
-        #         if st.button(f"📁 {log}", key=f"log_{log}"):
-        #             # Load logs from the selected folder
-        #             selected_folder = os.path.join(logs_dir, log)
-        #             with open(os.path.join(selected_folder, "log.jsonl"), "r") as f:
-        #                 logs = f.readlines()
-        #             st.session_state.chat_history.append({
-        #                 'task': log,
-        #                 'timestamp': "N/A",
-        #                 'logs': [json.loads(entry) for entry in logs],
-        #                 'final_answer': None,
-        #                 'folder': log
-        #             })
-        #             st.session_state.current_chat_index = len(st.session_state.chat_history) - 1
-        #             st.session_state.task_completed = True
-
     # Main Content
     with main_col:
         if st.session_state.current_chat_index is None:
@@ -246,14 +226,9 @@ try:
             task_placeholder = TASK_TEMPLATES[template_type]
             task = st.text_input("Describe your task:", value=task_placeholder if task_placeholder else "", key="task_input")
             if st.button("Run Task", key="run_task", disabled=not task.strip()):
-                # Create a folder name from the task
-                folder_name = task.strip().lower()
-                # Replace spaces with underscores and remove special characters
-                folder_name = ''.join(e for e in folder_name.replace(' ', '_') if e.isalnum() or e == '_')
-                # Truncate if too long (optional)
-                folder_name = folder_name[:50]
-                # Add timestamp to ensure uniqueness
-                chat_folder = os.path.join(logs_dir, f"{datetime.now().strftime('%Y%m%d%H%M%S')}_{folder_name}")
+                # Create a folder name using timestamp, UUID and truncated task
+                folder_name = f"{datetime.now().strftime('%Y%m%d_%H%M%S')}_{str(uuid.uuid4())[:8]}_{task.strip().lower()[:20]}"
+                chat_folder = os.path.join(logs_dir, folder_name)
                 os.makedirs(chat_folder, exist_ok=True)
 
                 new_chat = {
@@ -266,7 +241,7 @@ try:
                 st.session_state.chat_history.append(new_chat)
                 st.session_state.current_chat_index = len(st.session_state.chat_history) - 1
                 st.session_state.task_completed = False
-                st.experimental_rerun()
+                st.rerun()
         else:
             # Display selected chat
             chat = st.session_state.chat_history[st.session_state.current_chat_index]
@@ -283,7 +258,9 @@ try:
                 async def run_magentic_one():
                     try:
                         status_container.info("Initializing Magentic-One...")
-                        magnetic_one = MagenticOneHelper(logs_dir=os.path.join(current_dir, "my_logs", chat['folder']))
+                        # Create full path for the chat folder
+                        chat_logs_dir = os.path.join(current_dir, "my_logs", chat['folder'])
+                        magnetic_one = MagenticOneHelper(logs_dir=chat_logs_dir)
                         await magnetic_one.initialize()
 
                         task_future = asyncio.create_task(
@@ -338,7 +315,7 @@ try:
 
             if st.button("🔄 Restart Task", key="restart_task"):
                 reset_chat()
-                st.experimental_rerun()
+                st.rerun()
 
 except Exception as e:
     st.error(f"An unexpected error occurred: {str(e)}")
