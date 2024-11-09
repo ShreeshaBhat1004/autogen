@@ -48,3 +48,17 @@ async def magentic_one_example():
     else:
         print("No final answer found in logs.")
 ```
+
+# How to run the Streamlit App
+
+To run the Streamlit app, navigate to the interface directory and run the following command:
+
+```bash
+streamlit run streamlit_app.py
+```
+
+Alternatively, you can run the Streamlit app from the root directory of the repository by running the following command:
+
+```bash
+streamlit run packages/autogen-magentic-one/interface/streamlit_app.py
+```

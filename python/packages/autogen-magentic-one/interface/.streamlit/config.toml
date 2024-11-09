@@ -1,0 +1,18 @@
+[theme]
+base="dark"
+primaryColor="#4CAF50" # Forest green
+backgroundColor="#1A2F1A" # Dark forest green
+secondaryBackgroundColor="#2E462E" # Medium forest green
+textColor="#C5E1A5" # Light forest green/mint
+font="sans serif"
+
+[server]
+runOnSave = true
+enableXsrfProtection = true
+
+[browser]
+gatherUsageStats = false
+
+[client]
+toolbarMode = "minimal"
+showErrorDetails = true
