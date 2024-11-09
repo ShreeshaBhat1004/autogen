@@ -9,6 +9,7 @@ font="sans serif"
 [server]
 runOnSave = true
 enableXsrfProtection = true
+port = 8502
 
 [browser]
 gatherUsageStats = false

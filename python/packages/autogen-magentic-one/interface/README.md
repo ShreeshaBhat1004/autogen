@@ -51,7 +51,14 @@ async def magentic_one_example():
 
 # How to run the Streamlit App
 
-To run the Streamlit app, navigate to the interface directory and run the following command:
+# Go back to the project's main venv
+cd /workspaces/autogen/python/packages/autogen-core
+source venv_py311/bin/activate
+
+# Navigate back to the interface directory
+cd ../autogen-magentic-one/interface
+
+Run the following command:
 
 ```bash
 streamlit run streamlit_app.py
