@@ -1,1 +1,22 @@
-
+[
+    {
+        "model": "gemini-pro",
+        "api_key": "your Google's GenAI Key goes here",
+        "api_type": "google"
+    },
+    {
+        "model": "gemini-1.5-pro-001",
+        "api_type": "google"
+    },
+    {
+        "model": "gemini-1.5-pro",
+        "project_id": "your-awesome-google-cloud-project-id",
+        "location": "us-west1",
+        "google_application_credentials": "your-google-service-account-key.json"
+    },
+    {
+        "model": "gemini-pro-vision",
+        "api_key": "your Google's GenAI Key goes here",
+        "api_type": "google"
+    }
+]
